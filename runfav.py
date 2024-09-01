@@ -15,10 +15,15 @@ def backup_bashrc():
     print(f"Backup of .bashrc created at {backup_path}")
     return backup_path
 
-def restore_bashrc(backup_path):
+def restore_bashrc():
     bashrc_path = os.path.expanduser("~/.bashrc")
-    shutil.copy(backup_path, bashrc_path)
-    print(f".bashrc restored from {backup_path}")
+    backups = sorted([f for f in os.listdir(os.path.expanduser("~")) if f.startswith(".bashrc.")], reverse=True)
+    if backups:
+        latest_backup = os.path.expanduser(f"~/{backups[0]}")
+        shutil.copy(latest_backup, bashrc_path)
+        print(f".bashrc restored from {latest_backup}")
+    else:
+        print("No backup found to restore.")
 
 def add_to_bashrc():
     bashrc_path = os.path.expanduser("~/.bashrc")
@@ -28,7 +33,7 @@ runfav() {
   echo "Choose an option:"
   echo "(A)dd a new command"
   echo "(U)se an existing command"
-  echo "(R)emove changes"
+  echo "(R)emove a command"
   read -p "Enter your choice (A/U/R): " choice
 
   if [[ $choice == "A" || $choice == "a" ]]; then
@@ -42,13 +47,15 @@ runfav() {
       eval "$edited_cmd"
     fi
   elif [[ $choice == "R" || $choice == "r" ]]; then
-    read -p "Are you sure you want to remove the changes? (y/n): " confirm
-    if [[ $confirm == "Y" || $confirm == "y" ]]; then
-      restore_bashrc ~/.bashrc.bak
-      rm -f ~/.fav_commands
-      echo "Changes removed successfully!"
-    else
-      echo "Removal cancelled."
+    cmd=$(cat ~/.fav_commands | fzf)
+    if [ -n "$cmd" ]; then
+      read -p "Are you sure you want to remove the selected command? (y/n): " confirm
+      if [[ $confirm == "Y" || $confirm == "y" ]]; then
+        grep -vF "$cmd" ~/.fav_commands > ~/.fav_commands.tmp && mv ~/.fav_commands.tmp ~/.fav_commands
+        echo "Command removed successfully!"
+      else
+        echo "Removal cancelled."
+      fi
     fi
   else
     echo "Invalid choice. Please run 'runfav' again and choose A, U, or R."
@@ -107,11 +114,17 @@ who
         print(".fav_commands file already exists")
 
 def main():
-    backup_path = backup_bashrc()
-    install_fzf()
-    add_to_bashrc()
-    create_fav_commands()
-    print("Setup complete. Please restart your terminal or run 'source ~/.bashrc' to use the new function.")
+    choice = input("Do you want to (U)pdate .bashrc or (R)estore the previous version? (U/R): ").strip().lower()
+    if choice == 'u':
+        backup_path = backup_bashrc()
+        install_fzf()
+        add_to_bashrc()
+        create_fav_commands()
+        print("Setup complete. Please restart your terminal or run 'source ~/.bashrc' to use the new function.")
+    elif choice == 'r':
+        restore_bashrc()
+    else:
+        print("Invalid choice. Please run the script again and choose U or R.")
 
 if __name__ == "__main__":
     main()

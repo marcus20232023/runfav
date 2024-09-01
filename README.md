@@ -9,7 +9,7 @@ RunFav is a simple utility that allows you to quickly access and run your favori
 - Creates a `.fav_commands` file to store your favorite commands
 - Allows inline editing of commands before execution
 - Option to add new commands to the list
-- Option to remove the changes and restore the original `.bashrc` file
+- Option to remove a command from the list
 
 ## Installation
 
@@ -23,7 +23,9 @@ RunFav is a simple utility that allows you to quickly access and run your favori
    python3 runfav.py
    ```
 
-4. Restart your terminal or run `source ~/.bashrc` to apply the changes.
+4. Follow the prompts to either update your `.bashrc` or restore the previous version.
+
+5. If you choose to update, restart your terminal or run `source ~/.bashrc` to apply the changes.
 
 ## Usage
 
@@ -38,7 +40,7 @@ RunFav is a simple utility that allows you to quickly access and run your favori
 3. Choose an option:
    - `(A)dd a new command`: Add a new command to the `~/.fav_commands` file.
    - `(U)se an existing command`: Use fuzzy search to find and run a command from the `~/.fav_commands` file.
-   - `(R)emove changes`: Restore the original `.bashrc` file and remove the `~/.fav_commands` file.
+   - `(R)emove a command`: Use fuzzy search to find and remove a command from the `~/.fav_commands` file.
 
 4. If you choose to use an existing command, the selected command will be displayed for editing. Press Enter to run it as-is, or edit it before running.
 
