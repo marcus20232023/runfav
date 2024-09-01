@@ -8,6 +8,8 @@ RunFav is a simple utility that allows you to quickly access and run your favori
 - Adds a `runfav` function to your `.bashrc`
 - Creates a `.fav_commands` file to store your favorite commands
 - Allows inline editing of commands before execution
+- Option to add new commands to the list
+- Option to remove the changes and restore the original `.bashrc` file
 
 ## Installation
 
@@ -33,9 +35,12 @@ RunFav is a simple utility that allows you to quickly access and run your favori
    runfav
    ```
 
-3. Use fuzzy search to find the command you want to run.
+3. Choose an option:
+   - `(A)dd a new command`: Add a new command to the `~/.fav_commands` file.
+   - `(U)se an existing command`: Use fuzzy search to find and run a command from the `~/.fav_commands` file.
+   - `(R)emove changes`: Restore the original `.bashrc` file and remove the `~/.fav_commands` file.
 
-4. The selected command will be displayed for editing. Press Enter to run it as-is, or edit it before running.
+4. If you choose to use an existing command, the selected command will be displayed for editing. Press Enter to run it as-is, or edit it before running.
 
 ## Requirements
 
@@ -45,7 +50,7 @@ RunFav is a simple utility that allows you to quickly access and run your favori
 
 ## Note
 
-This script modifies your `.bashrc` file and installs fzf in your home directory. Make sure you understand these changes before running the script.
+This script modifies your `.bashrc` file and installs fzf in your home directory. Make sure you understand these changes before running the script. A backup of your `.bashrc` file will be created before any modifications.
 
 ## License
 
